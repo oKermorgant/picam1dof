@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+
+<!-- camera interface -->
+<node type="raspicam_node" pkg="raspicam_node" name="raspicam" respawn="true">
+    <param name="camera_info_url" value="file://$(find picam1dof)/launch/cam.yaml"/>
+    <param name="width" value="480"/>
+    <param name="height" value="480"/>
+    <param name="framerate" value="20"/>
+    <param name="camera_frame_id" value="picam"/>
+    <param name="camera_name" value="picam"/>
+    <param name="rotation" value="-90"/>
+</node>
+
+</launch>
