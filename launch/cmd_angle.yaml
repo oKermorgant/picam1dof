@@ -1,0 +1,12 @@
+# to be used with slider_publisher
+angle_cmd:
+    type: picam1dof/Cmd
+    angle: 
+        min: -1.2
+        max: 1.2
+        to: cmd
+    mode: 
+        min: 0
+        max: 1
+        to: mode
+        

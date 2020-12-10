@@ -1,0 +1,6 @@
+uint8 COLOR = 0
+uint8 FLOW = 1
+float64 gain 0.5
+uint8 mode 1
+uint8[3] rgb [255,0,0]
+---
