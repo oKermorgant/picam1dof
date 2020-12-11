@@ -16,7 +16,7 @@ pkg_check_modules(YamlCpp yaml-cpp)
 
 rosidl_generate_interfaces(${PROJECT_NAME} "msg/Cmd.msg" "srv/Detect.srv")
 
-add_library(process_image_node SHARED src/process_image.cpp)
+add_library(process_image_node SHARED src/process_image.cpp src/color_detector.cpp src/flow_detector.cpp src/flow_point.cpp)
 target_include_directories(process_image_node PRIVATE 
                            include
                            ${OpenCV_INCLUDE_DIRS}
@@ -29,19 +29,15 @@ rosidl_target_interfaces(process_image_node ${PROJECT_NAME} "rosidl_typesupport_
 rclcpp_components_register_node(process_image_node
   PLUGIN "picam1dof::ProcessImage"
   EXECUTABLE process_image)
-  
-add_executable(detect src/detect.cpp)
-ament_target_dependencies(detect rclcpp)
-rosidl_target_interfaces(detect ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 install(TARGETS process_image_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
-install(TARGETS detect DESTINATION lib/${PROJECT_NAME})
+  
 install(PROGRAMS src/pwm.py DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}) 
+  DESTINATION share/${PROJECT_NAME})
   
 ament_export_libraries(process_image_node)
 ament_package()

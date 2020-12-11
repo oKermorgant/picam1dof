@@ -1,11 +1,16 @@
 #!/usr/bin/python3
+try:
+    import pigpio
+except:
+    import sys
+    sys.exit(0)
+
 def interp(x, xm, xM, ym, yM):
     return ym + (x-xm)*(yM-ym)/(xM-xm)
 
 import rclpy
 from rclpy.node import Node
 from picam1dof.msg import Cmd
-import pigpio
 
 class PWMNode(Node):
     
@@ -29,10 +34,16 @@ class PWMNode(Node):
         self.dt = 0.02  
         self.angle = 0.
         self.timer = self.create_timer(self.dt, self.move)
+        self.cmd_time = 0
+        self.watchdog = self.create_timer(2, self.stop_delay)
         
-        self.pwm = pigpio.pi()
+        self.pwm = None
         
     def cmd_callback(self, msg):
+        
+        if self.pwm is None:
+            self.pwm = pigpio.pi()
+        self.cmd_time = self.time_sec()
         self.cmd = msg
         
     def saturate(self):
@@ -40,19 +51,30 @@ class PWMNode(Node):
             self.angle = self.angle_min
         elif self.angle > self.angle_max:
             self.angle = self.angle_max            
+            
+    def time_sec(self):
+        return self.get_clock().now().seconds_nanoseconds()[0]
 
-    def move(self):
+    def move(self): 
+        
+        if self.pwm is None:
+            return
+        
         # take in last cmd
         if self.cmd.mode == self.cmd.POSITION:
-            print('position mode')
             self.angle = self.cmd.cmd
         else:
-            print('velocity mode')
             self.angle += self.dt * self.cmd.cmd
             
         self.saturate()                
         self.pwm.set_servo_pulsewidth(self.pwm_pin, 
                                       interp(self.angle, self.angle_min, self.angle_max, self.pwm_min, self.pwm_max))
+        
+    def stop_delay(self):
+        if self.pwm is not None and self.time_sec() - self.cmd_time > 2:
+            self.pwm.set_servo_pulsewidth(self.pwm_pin,0)
+            self.pwm.stop()
+            self.pwm = None
         
 def main(args=None):
     rclpy.init(args=args)
