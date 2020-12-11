@@ -101,12 +101,10 @@ std::pair<size_t, size_t> FlowPoint::computeOutliers(FlowPoints &points)
 
   if(outlier_count < 5)
   {
+    // just keep from last processing
     outliers_it = std::partition(points.begin(), valid_it, isOutlier);
     outlier_count = std::distance(points.begin(), outliers_it);
-    std::cerr << "kept " << outlier_count << " from previous processing" << std::endl;
   }
-  else // enough outliers to be considered
-    std::cerr << "detected " << outlier_count << " outliers";
 
   // refine from median
   const auto median(medianPoint(points, outliers_it, outlier_count/2));
@@ -116,7 +114,6 @@ std::pair<size_t, size_t> FlowPoint::computeOutliers(FlowPoints &points)
   std::for_each(points.begin(), outliers_it, setOutlier);
   std::for_each(outliers_it, valid_it, setNotOutlier);
   outlier_count = std::distance(points.begin(), outliers_it);
-  std::cerr << " -> reduced to " << outlier_count << std::endl;
 
   return {outlier_count, valid};
 }
