@@ -16,7 +16,8 @@ pkg_check_modules(YamlCpp yaml-cpp)
 
 rosidl_generate_interfaces(${PROJECT_NAME} "msg/Cmd.msg" "srv/Detect.srv")
 
-add_library(process_image_node SHARED src/process_image.cpp src/color_detector.cpp src/flow_detector.cpp src/flow_point.cpp)
+add_library(process_image_node SHARED src/process_image.cpp
+src/color_detector.cpp src/flow_detector.cpp src/flow_point.cpp src/face_detector.cpp)
 target_include_directories(process_image_node PRIVATE 
                            include
                            ${OpenCV_INCLUDE_DIRS}
@@ -36,7 +37,7 @@ install(TARGETS process_image_node
   RUNTIME DESTINATION bin)
   
 install(PROGRAMS src/pwm.py DESTINATION lib/${PROJECT_NAME})
-install(DIRECTORY launch
+install(DIRECTORY launch haar
   DESTINATION share/${PROJECT_NAME})
   
 ament_export_libraries(process_image_node)

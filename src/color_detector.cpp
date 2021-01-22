@@ -1,6 +1,6 @@
 
 #include <picam1dof/color_detector.h>
-
+#include <iostream>
 namespace picam1dof
 {
 
@@ -8,7 +8,8 @@ using std::vector;
 
 void ColorDetector::detectColor(int r, int g, int b)
 {
-  ccolor = cv::Scalar(b,g,r);
+  ccolor = {float(b),float(g),float(r)};
+
   // convert color to HSV
   const float cmax = std::max(r, std::max(g,b));
   const float cmin = std::min(r, std::min(g,b));

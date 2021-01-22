@@ -30,7 +30,7 @@ public:
 protected:
   std::vector<FlowPoint> flow_points;
   cv::Point2f cog;
-  static constexpr int MAX_POINTS = 200;
+  static constexpr int MAX_POINTS = 300;
 
 };
 }

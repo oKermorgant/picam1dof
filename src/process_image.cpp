@@ -32,9 +32,16 @@ ProcessImage::ProcessImage(rclcpp::NodeOptions options) : rclcpp::Node("process_
     else
     {
       flow_detector.init();
-      detect_mode = DetectMode::COLOR;
-      color_detector.detectColor(req->rgb[0], req->rgb[1], req->rgb[2]);
-      (void) res;
+      if(req->mode == req->COLOR)
+      {
+        detect_mode = DetectMode::COLOR;
+        color_detector.detectColor(req->rgb[0], req->rgb[1], req->rgb[2]);
+        (void) res;
+      }
+      else
+      {
+        detect_mode = DetectMode::FACE;
+      }
     }
   });
 
@@ -47,7 +54,7 @@ ProcessImage::ProcessImage(rclcpp::NodeOptions options) : rclcpp::Node("process_
   flow_detector.setThreshold(declare_parameter("outlier_threshold", 50.f));
 
   cb_handle = add_on_set_parameters_callback(
-              std::bind(&ProcessImage::parametersCallback, this, std::placeholders::_1));
+        std::bind(&ProcessImage::parametersCallback, this, std::placeholders::_1));
 }
 
 void ProcessImage::process()
@@ -59,15 +66,19 @@ void ProcessImage::process()
 
   float x;
   bool success;
-  if(detect_mode == DetectMode::FLOW)
-  {
+  switch (detect_mode) {
+  case DetectMode::FLOW:
     success = flow_detector.process(img);
     x = flow_detector.x();
-  }
-  else
-  {
+    break;
+  case DetectMode::COLOR:
     success = color_detector.process(img);
     x = color_detector.x();
+    break;
+  default:
+    success = face_detector.process(img);
+    x = face_detector.x();
+    break;
   }
 
   cv_bridge::CvImage(im_msg.header, "bgr8", img).toImageMsg(im_msg);

@@ -12,6 +12,7 @@
 
 #include <picam1dof/color_detector.h>
 #include <picam1dof/flow_detector.h>
+#include <picam1dof/face_detector.h>
 
 
 namespace picam1dof
@@ -20,7 +21,7 @@ namespace picam1dof
 using picam1dof::msg::Cmd;
 using picam1dof::srv::Detect;
 
-enum class DetectMode {COLOR, FLOW};
+enum class DetectMode {COLOR, FLOW, FACE};
 
 class ProcessImage : public rclcpp::Node
 {
@@ -39,7 +40,7 @@ private:
   rclcpp::TimerBase::SharedPtr refresh_timer;
   void process();
 
-  DetectMode detect_mode = DetectMode::FLOW;
+  DetectMode detect_mode = DetectMode::COLOR;
   rclcpp::Service<Detect>::SharedPtr detect_srv;
 
   Cmd cmd;
@@ -51,8 +52,7 @@ private:
 
   ColorDetector color_detector;
   FlowDetector flow_detector;
-
-
+  FaceDetector face_detector;
 
 };
 }
