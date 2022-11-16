@@ -81,6 +81,9 @@ void ProcessImage::process()
     break;
   }
 
+  cv::imshow("Processed", img);
+  cv::waitKey(1);
+
   cv_bridge::CvImage(im_msg.header, "bgr8", img).toImageMsg(im_msg);
   im_msg.header.stamp = now();
 

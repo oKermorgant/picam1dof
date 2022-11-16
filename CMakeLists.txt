@@ -23,7 +23,7 @@ target_include_directories(process_image_node PRIVATE
                            ${YamlCpp_INCLUDE_DIRS})
 ament_target_dependencies(
   process_image_node rclcpp cv_bridge image_transport rclcpp_components)
-target_link_libraries(process_image_node "${cpp_typesupport_target}")
+target_link_libraries(process_image_node "${cpp_typesupport_target}" ${OpenCV_LIBRARIES})
 
 # auto-executable from node
 rclcpp_components_register_node(process_image_node
