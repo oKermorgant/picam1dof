@@ -10,7 +10,7 @@ namespace picam1dof
 ProcessImage::ProcessImage(rclcpp::NodeOptions options) : rclcpp::Node("process_image", options)
 {
   // control gain
-  gain = declare_parameter("gain", 3.);
+  gain = declare_parameter("gain", 1.5);
 
   // image I/O
   im_sub = image_transport::create_subscription(this, "image", [&](const sensor_msgs::msg::Image::ConstSharedPtr &msg)

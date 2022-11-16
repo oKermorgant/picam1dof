@@ -10,11 +10,10 @@ find_package(image_transport REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
-find_package(PkgConfig)
-pkg_check_modules(YamlCpp yaml-cpp)
-
+find_package(yaml-cpp)
 
 rosidl_generate_interfaces(${PROJECT_NAME} "msg/Cmd.msg" "srv/Detect.srv")
+rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
 
 add_library(process_image_node SHARED src/process_image.cpp
 src/color_detector.cpp src/flow_detector.cpp src/flow_point.cpp src/face_detector.cpp)
@@ -24,7 +23,7 @@ target_include_directories(process_image_node PRIVATE
                            ${YamlCpp_INCLUDE_DIRS})
 ament_target_dependencies(
   process_image_node rclcpp cv_bridge image_transport rclcpp_components)
-rosidl_target_interfaces(process_image_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(process_image_node "${cpp_typesupport_target}")
 
 # auto-executable from node
 rclcpp_components_register_node(process_image_node
@@ -34,7 +33,8 @@ rclcpp_components_register_node(process_image_node
 install(TARGETS process_image_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin)
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+  )
   
 install(PROGRAMS src/pwm.py DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY launch haar

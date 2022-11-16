@@ -6,8 +6,8 @@ def generate_launch_description():
     sl = SimpleLauncher()
     
     sl.declare_arg('device', default_value=0, description='video device')
-    sl.declare_arg('width', default_value=640, description='image height')
-    sl.declare_arg('height', default_value=480, description='image width')
+    sl.declare_arg('width', default_value=640, description='image width')
+    sl.declare_arg('height', default_value=480, description='image height')
     
     # on picam the camera is rotated
     sl.declare_arg('rotation', default_value=270, description='image rotation')
