@@ -9,15 +9,11 @@ sl.declare_arg('width', default_value=640, description='image width')
 sl.declare_arg('height', default_value=480, description='image height')
 
 # on picam the camera is rotated
-sl.declare_arg('rotation', default_value=270, description='image rotation')
+sl.declare_arg('rotate', default_value=270, description='image rotation')
 
 def launch_setup():
 
-    # rotate camera beforehand
-    system(f'v4l2-ctl -c rotate={sl.arg("rotation")}')
-
-
-    sl.node('image_tools', 'cam2image', parameters = sl.arg_map('device', 'width', 'height'), arguments=['--ros-args', '--log-level', 'warn'])
+    sl.node('v4l2_camera', 'v4l2_camera_node', parameters = sl.arg_map('device', 'width', 'height','rotate'))
 
     # also, run the PWM
     sl.node('picam1dof', 'pwm.py')
@@ -25,4 +21,4 @@ def launch_setup():
     return sl.launch_description()
 
 
-return sl.launch_description(opaque_function=launch_setup)
+generate_launch_description = sl.launch_description(opaque_function=launch_setup)
