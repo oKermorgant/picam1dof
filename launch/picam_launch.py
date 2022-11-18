@@ -15,7 +15,7 @@ def generate_launch_description():
 
     sl.node('v4l2_camera', 'v4l2_camera_node', parameters = [sl.arg_map('device', 'width', 'height','rotate'),
                                                              {'output_encoding': 'rgb8', 'camera_info_url': sl.find('picam1dof', 'picam.yaml')}],
-                                                remappings={'image_raw': 'image'})
+                                                remappings={'image_raw': 'image', 'image_raw/compressed': 'image/compressed'})
 
     # also, run the PWM
     sl.node('picam1dof', 'pwm.py')
