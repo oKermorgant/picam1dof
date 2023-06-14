@@ -14,7 +14,7 @@ ProcessImage::ProcessImage(rclcpp::NodeOptions options) : rclcpp::Node("process_
 
   // image I/O
   im_sub = image_transport::create_subscription(this, "image", [&](const sensor_msgs::msg::Image::ConstSharedPtr &msg)
-  {img = cv_bridge::toCvCopy(msg, "bgr8")->image;}, "raw");
+  {img = cv_bridge::toCvCopy(msg, "bgr8")->image;}, "compressed");
   im_pub = image_transport::create_publisher(this, "image_proc");
 
   cmd_pub = create_publisher<Cmd>("angle_cmd", 10);

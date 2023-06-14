@@ -7,6 +7,7 @@ set(CMAKE_BUILD_TYPE Release)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(image_transport REQUIRED)
+find_package(image_transport_plugins REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
@@ -22,7 +23,7 @@ target_include_directories(process_image_node PRIVATE
                            ${OpenCV_INCLUDE_DIRS}
                            ${YamlCpp_INCLUDE_DIRS})
 ament_target_dependencies(
-  process_image_node rclcpp cv_bridge image_transport rclcpp_components)
+  process_image_node rclcpp cv_bridge image_transport image_transport_plugins rclcpp_components)
 target_link_libraries(process_image_node "${cpp_typesupport_target}" ${OpenCV_LIBRARIES})
 
 # auto-executable from node
