@@ -1,6 +1,5 @@
 from simple_launch import SimpleLauncher
-from launch.substitutions import Command
-from os import system
+
 
 def generate_launch_description():
 
@@ -10,17 +9,23 @@ def generate_launch_description():
     sl.declare_arg('width', default_value=640, description='image width')
     sl.declare_arg('height', default_value=480, description='image height')
 
+    sl.declare_arg('camera_ros', True)
+
     # on picam the camera is rotated
     sl.declare_arg('rotate', default_value=270, description='image rotation')
 
     dev = '/dev/video' + dev
 
-    sl.node('v4l2_camera', 'v4l2_camera_node',
-            parameters = [sl.arg_map('width', 'height','rotate'),
-                          {'output_encoding': 'rgb8',
-                           'camera_info_url': sl.find('picam1dof', 'picam.yaml'),
-                           'video_device': dev}],
-            remappings={'image_raw': 'image', 'image_raw/compressed': 'image/compressed'})
+    with sl.group(unless_arg='camera_ros'):
+        sl.node('v4l2_camera', 'v4l2_camera_node',
+                parameters = [sl.arg_map('width', 'height','rotate'),
+                            {'output_encoding': 'rgb8',
+                            'camera_info_url': sl.find('picam1dof', 'picam.yaml'),
+                            'video_device': dev}],
+                remappings={'image_raw': 'image', 'image_raw/compressed': 'image/compressed'})
+
+    with sl.group(if_arg='camera_ros'):
+        sl.node('camera_ros', 'camera_node', parameters = sl.arg_map('width', 'height'))
 
     # also, run the PWM
     sl.node('picam1dof', 'pwm.py')
