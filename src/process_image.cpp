@@ -1,5 +1,5 @@
 #include <rclcpp/rclcpp.hpp>
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge.hpp>
 #include <picam1dof/process_image.h>
 
 using  namespace std::chrono_literals;
@@ -15,6 +15,9 @@ ProcessImage::ProcessImage(rclcpp::NodeOptions options) : rclcpp::Node("process_
   // image I/O
   im_sub = image_transport::create_subscription(this, "image", [&](const sensor_msgs::msg::Image::ConstSharedPtr &msg)
   {img = cv_bridge::toCvCopy(msg, "bgr8")->image;}, "compressed");
+
+
+
   im_pub = image_transport::create_publisher(this, "image_proc");
 
   cmd_pub = create_publisher<Cmd>("angle_cmd", 10);
