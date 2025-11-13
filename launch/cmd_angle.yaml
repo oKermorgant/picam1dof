@@ -7,4 +7,5 @@ angle_cmd:
         to: cmd
     use_position:
         to: use_position
+        default: True
         
