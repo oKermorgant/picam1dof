@@ -21,7 +21,7 @@ ProcessImage::ProcessImage(rclcpp::NodeOptions options) : rclcpp::Node("process_
   im_pub = image_transport::create_publisher(this, "image_proc");
 
   cmd_pub = create_publisher<Cmd>("angle_cmd", 10);
-  cmd.mode = cmd.VELOCITY;
+  cmd.use_position = false;
 
   refresh_timer = create_wall_timer( 50ms,    // rate
                                      [&]()

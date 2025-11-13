@@ -2,6 +2,7 @@
 try:
     import pigpio
 except:
+    print('Could not load pigpio, exiting')
     import sys
     sys.exit(0)
 
@@ -61,7 +62,7 @@ class PWMNode(Node):
             return
         
         # take in last cmd
-        if self.cmd.mode == self.cmd.POSITION:
+        if self.cmd.use_position:
             self.angle = self.cmd.cmd
         else:
             self.angle += self.dt * self.cmd.cmd
