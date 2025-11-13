@@ -5,6 +5,6 @@ angle_cmd:
         min: -1.2
         max: 1.2
         to: cmd
-    mode: 
+    use_position:
         to: use_position
         
