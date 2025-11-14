@@ -27,6 +27,7 @@ class PWMNode(Node):
     pwm_min = 500
     pwm_max = 2500
     pwm_pin = 18
+    angle_offset = 0.07
 
     def __init__(self):
         super().__init__('pwm')
@@ -75,7 +76,7 @@ class PWMNode(Node):
             
         self.saturate()                
         self.pwm.set_servo_pulsewidth(self.pwm_pin, 
-                                      interp(self.angle, self.angle_min, self.angle_max, self.pwm_min, self.pwm_max))
+                                      interp(self.angle+self.angle_offset, self.angle_min, self.angle_max, self.pwm_min, self.pwm_max))
         
     def stop_delay(self):
         if self.pwm is not None and self.time_sec() - self.cmd_time > 2:
