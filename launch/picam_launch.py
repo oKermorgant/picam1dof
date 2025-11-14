@@ -10,7 +10,7 @@ def generate_launch_description():
 
     sl.node('camera_ros', 'camera_node',
             parameters = [sl.arg_map('width', 'height'),
-                        {'camera_info_url': sl.find('picam1dof', 'picam.yaml')}],
+                        {'camera_info_url': 'file://'+sl.find('picam1dof', 'picam.yaml')}],
             remappings={'image_raw': 'image', 'image_raw/compressed': 'image/compressed'})
 
 
