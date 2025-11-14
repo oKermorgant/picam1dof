@@ -7,6 +7,12 @@ except:
     sys.exit(0)
 
 def interp(x, xm, xM, ym, yM):
+
+    if x < xm:
+        return ym
+    if x > xM:
+        return yM
+
     return ym + (x-xm)*(yM-ym)/(xM-xm)
 
 import rclpy
