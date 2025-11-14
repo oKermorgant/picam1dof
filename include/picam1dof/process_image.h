@@ -40,7 +40,7 @@ private:
   rclcpp::TimerBase::SharedPtr refresh_timer;
   void process();
 
-  DetectMode detect_mode = DetectMode::COLOR;
+  DetectMode detect_mode = DetectMode::FLOW;
   rclcpp::Service<Detect>::SharedPtr detect_srv;
 
   Cmd cmd;

@@ -13,7 +13,7 @@ ProcessImage::ProcessImage(rclcpp::NodeOptions options) : rclcpp::Node("process_
   gain = declare_parameter("gain", 1.5);
 
   // image I/O
-  im_sub = image_transport::create_subscription(this, "/camera/image_raw", [&](const sensor_msgs::msg::Image::ConstSharedPtr &msg)
+  im_sub = image_transport::create_subscription(this, "image", [&](const sensor_msgs::msg::Image::ConstSharedPtr &msg)
   {img = cv_bridge::toCvCopy(msg, "bgr8")->image;}, "compressed");
 
 
