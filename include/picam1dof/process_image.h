@@ -31,6 +31,11 @@ public:
 
 private:
 
+  void imageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg)
+  {
+    img = cv_bridge::toCvCopy(msg, "bgr8")->image;
+  }
+
   // params
   double gain;
   OnSetParametersCallbackHandle::SharedPtr cb_handle;
@@ -40,7 +45,7 @@ private:
   rclcpp::TimerBase::SharedPtr refresh_timer;
   void process();
 
-  DetectMode detect_mode = DetectMode::FLOW;
+  DetectMode detect_mode = DetectMode::COLOR;
   rclcpp::Service<Detect>::SharedPtr detect_srv;
 
   Cmd cmd;

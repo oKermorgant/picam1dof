@@ -1,6 +1,5 @@
 
 #include <picam1dof/color_detector.h>
-#include <iostream>
 namespace picam1dof
 {
 

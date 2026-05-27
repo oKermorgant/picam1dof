@@ -12,6 +12,7 @@
   <depend>cv_bridge</depend>
   <depend>image_transport</depend>
   <depend>rclcpp_components</depend>
+  <depend>yaml_cpp_vendor</depend>
 
   <exec_depend>v4l2_camera</exec_depend>
   
