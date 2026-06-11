@@ -32,6 +32,8 @@ def generate_launch_description():
                               'height': height})
     else:
         sl.node('v4l2_camera', 'v4l2_camera_node', name = 'camera',
+                remappings = {'image_raw/compressed': 'image/compressed',
+                              'image_raw': 'image'},
         parameters = {#'pixel_format': 'mjpg',
                         'video_device': dev,
                         'camera_frame_id': frame_id,
