@@ -7,14 +7,14 @@ def generate_launch_description():
 
     has_camera_ros = False
 
-    # try:
-    #     get_package_prefix('camera_ros')
-    #     has_camera_ros = True
-    # except:
-    #     pass
+    try:
+        get_package_prefix('camera_ros')
+        has_camera_ros = True
+    except:
+        pass
 
 
-    cam_info = 'file://' + sl.find('picam1dof', 'picam.yaml')
+    cam_info = 'file://' + sl.find('picam1dof', 'calib.yaml')
     dev = '/dev/video0'
     frame_id = 'camera'
     height = 600
@@ -23,8 +23,9 @@ def generate_launch_description():
     if has_camera_ros:
         sl.node('camera_ros', 'camera_node', name = 'camera',
                 remappings = {'~/camera_info': 'camera_info',
-                              '~/image_raw/compressed': 'image/compressed'},
-                parameters = {'camera': 1,
+                              '~/image_raw/compressed': 'image/compressed',
+                              '~/image_raw': 'image'},
+                parameters = {'camera': 0,
                               'camera_info_url': cam_info,
                               'frame_id': frame_id,
                               'format': 'MJPEG',
