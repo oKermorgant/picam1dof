@@ -7,11 +7,11 @@ def generate_launch_description():
 
     has_camera_ros = False
 
-    try:
-        get_package_prefix('camera_ros')
-        has_camera_ros = True
-    except:
-        pass
+    # try:
+    #     get_package_prefix('camera_ros')
+    #     has_camera_ros = True
+    # except:
+    #     pass
 
 
     cam_info = 'file://' + sl.find('picam1dof', 'picam.yaml')
