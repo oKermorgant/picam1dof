@@ -11,6 +11,9 @@ ament_auto_find_build_dependencies()
 rosidl_generate_interfaces(${PROJECT_NAME} "msg/Cmd.msg" "srv/Detect.srv")
 rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
 
+
+if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
+
 ament_auto_add_library(process_image_node SHARED src/process_image.cpp
 src/color_detector.cpp src/flow_detector.cpp src/flow_point.cpp src/face_detector.cpp)
 target_include_directories(process_image_node PRIVATE include)
@@ -20,6 +23,8 @@ target_link_libraries(process_image_node "${cpp_typesupport_target}" ${OpenCV_LI
 rclcpp_components_register_node(process_image_node
   PLUGIN "picam1dof::ProcessImage"
   EXECUTABLE process_image)
+
+endif()
 
 # install(TARGETS process_image_node
 #   ARCHIVE DESTINATION lib
